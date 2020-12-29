@@ -1,0 +1,6 @@
+run/
+static/
+
+public/
+node_modules/
+app/mocks

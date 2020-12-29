@@ -1,0 +1,9 @@
+node_modules
+package-lock.json
+run/
+config/manifest.json
+logs/**
+.DS_Store
+**/**/.DS_Store
+main/**
+static/
