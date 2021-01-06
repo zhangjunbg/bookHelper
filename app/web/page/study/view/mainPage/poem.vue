@@ -1,48 +1,66 @@
 <template>
-  <div class="wordWrapperContainer">
+  <div class="wordWrapperContainer" v-if="curPoem.key">
     <div class="toolBar">
       <span>年级：{{ level }}</span>
-      <span v-if="curId < total">{{ curId + 1  }}/{{ total }}</span>
-    </div>
-    <div class="fullClick" v-if="curId < total">
-      <div class="controlPanel">
-        <div class="topPart" @click="markS('E')"></div>
-        <div class="downPart" @click="markS('R')"></div>
+      <div>
+        <span style="margin-right:2rem;">{{ curId + 1 }}/ {{ total }}</span>
+        <span
+          class="el-icon-video-play"
+          v-if="!isPlay"
+          @click="playSound"
+        ></span>
+        <span class="el-icon-video-pause" v-else @click="stopSound"></span>
+        <span
+          v-if="curId > 0"
+          @click="prev"
+          class="el-icon-back"
+          style="margin-right:2rem;"
+        ></span>
+        <span
+          v-if="curId < mainList.length - 1"
+          @click="next"
+          class="el-icon-right"
+        ></span>
+        <audio
+          style="position:absolute;z-index:-1;"
+          id="myaudio"
+          ref="mySound"
+          :src="'/public/static/mp3/' + curPoem.key + '.mp3'"
+          controls="controls"
+          :autoplay="autoplay"
+          :loop="loop"
+        ></audio>
       </div>
-      <word :fontSize="fontSize" :word="mainList[curId].content"></word>
     </div>
-    <div v-else>
-      恭喜完成今日任务
-      <el-button type="primary" @click="submitData">提交</el-button>
+    <div class="fullClick">
+      <div class="poemContainer">
+        <div class="mainTitle">{{ curPoem.title }}</div>
+        <div class="subTitle">
+          <span class="dynasty">&lt;{{ curPoem.dynasty }}&gt;</span
+          ><span class="author">{{ curPoem.author }}</span>
+        </div>
+        <div class="poemContent">
+          <p v-for="(item, index) in curPoemArr" :key="index">{{ item }}。</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
-<style lang="scss">
-.bgContainer {
-  position: absolute;
-  left: 0;
-  top: 1rem;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>
+
 <script type="text/babel">
 import { mapGetters } from "vuex";
 import word from "../../components/word";
 export default {
   components: {
-   word
+    word,
   },
   data() {
     return {
-      color1: "#ccc",
-      svgOpt: { gap: 12, all: 300, pointsDown: [], pointsUp: [] },
+      isPlay: false,
+      curPoem: {},
+      curPoemArr: [],
       mainObj: {},
-      curNum: 1,
-      curId: null,
+      curId: 0,
       total: 0,
       mainList: [],
       options: {
@@ -71,20 +89,20 @@ export default {
   },
   mounted() {
     this.$post(
-      "wordList",
+      "poemList",
       {
         level: this.level || "1",
         studied: this.studied,
-        pageSize: this.wordNum,
+        pageSize: 10,
         pageNo: 1,
       },
       (data) => {
         this.mainList = data.rows || [];
-        this.mainList.forEach((item) => {
-          this.mainObj[item._id] = item;
-        });
-        this.total = Math.min(data.total, this.wordNum);
-        if (this.mainList.length) this.curId = 0;
+        this.total = Math.min(data.total, 10);
+        this.curPoem = this.mainList[0] || {};
+        this.curPoemArr = this.getPoemArr();
+
+        this.loading = false;
       },
       (err) => {
         this.loading = false;
@@ -92,11 +110,47 @@ export default {
     );
   },
   methods: {
-    submitData() {
+    stopSound() {
+      this.$refs.mySound.pause();
+      this.isPlay = false;
+    },
+    playSound() {
+      this.$refs.mySound.play();
+      this.isPlay = true;
+    },
+    getPoemArr() {
+      let orignData = this.mainList[this.curId].content;
+      if (orignData) {
+        orignData.replace(/<p>/g, "");
+        let content = orignData.split(/[(<br\/>)(<\/p>)]/);
+        let curPoemArr = [];
+        content.forEach((item) => {
+          curPoemArr.push(...item.split("。"));
+        });
+        curPoemArr = curPoemArr.filter((item) => {
+          if (item) return item;
+        });
+        return curPoemArr;
+      } else {
+        return [];
+      }
+    },
+    prev() {
+      this.curId--;
+      this.curPoem = this.mainList[this.curId] || {};
+      this.curPoemArr = this.getPoemArr();
+    },
+    next() {
+      this.curId++;
+      this.curPoem = this.mainList[this.curId] || {};
+      this.curPoemArr = this.getPoemArr();
+      if (this.autoplay) this.isPlay = true;
+    },
+    studied2() {
       let updateData = [];
       this.mainList.forEach((item) => {
         updateData.push({
-          _id: item._id,
+          _id: cur._id,
           errorTimes: this.mainObj[item._id].errorTimes,
           learnTimes: this.mainObj[item._id].learnTimes,
           studied: this.mainObj[item._id].studied,
@@ -126,92 +180,36 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-.wordWrapperContainer {
-  -webkit-tap-highlight-color: transparent;
-  box-sizing: border-box;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background: #fff;
-  margin-top: 0.5rem;
-  padding: 2rem;
-
-  .toolBar {
-    width: 100%;
-    height: 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-}
-
-.wordWrapper {
-  -webkit-tap-highlight-color: transparent;
-  cursor: pointer;
-  position: relative;
-  height: 31.25rem;
-  width: 31.25rem;
-  line-height: 31.25rem;
-  /* background-image: url(../../../../asset/images/word_bg2_1.png); */
-  background-size: 100%;
-  background-repeat: no-repeat;
-  font-size: 23.75rem;
-  font-family: 楷体;
-
-  -moz-user-select: none;
-  /*火狐*/
-  -webkit-user-select: none;
-  /*webkit浏览器*/
-  -ms-user-select: none;
-  /*IE10*/
-  -khtml-user-select: none;
-  /*早期浏览器*/
-  -o-user-select: none;
-  /* Opera*/
-  user-select: none;
-
-  /* color:#940026; */
-}
-
+<style lang="scss" scoped>
+$fontSize: 3;
 .fullClick {
   -webkit-tap-highlight-color: transparent;
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   width: 100%;
   height: 100%;
+  overflow: auto;
   justify-content: center;
-}
-
-.controlPanel {
-  -webkit-tap-highlight-color: transparent;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-
-  .topPart,
-  .downPart {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* background: lightblue; */
-    height: 50%;
-    /* border-bottom: solid 1px #f1f1f1; */
-    font-size: 16rem;
-    color: #fff;
-    -webkit-tap-highlight-color: transparent;
+  .mainTitle {
+    font-size: #{$fontSize}rem;
+    margin-bottom: #{$fontSize * 0.5}rem;
+  }
+  .subTitle {
+    font-size: #{$fontSize * 2 / 3}rem;
+    margin-bottom: #{$fontSize}rem;
+    color: #666;
+  }
+  .dynasty {
+    margin-right: 1rem;
+    margin-bottom: #{$fontSize * 0.5}rem;
+  }
+  .poemContent {
+    font-size: #{$fontSize * 0.9}rem;
+    p {
+      line-height: #{$fontSize * 2}rem;
+    }
   }
 }
 </style>

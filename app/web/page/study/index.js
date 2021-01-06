@@ -1,11 +1,17 @@
-import App from 'framework/app';
-import createI18n from 'framework/i18n/admin';
+
+import Vue from 'vue';
 import store from './store';
 import createRouter from './router';
-import index from './index.vue';
-import "../../asset/css/index.scss"
-import "../../asset/css/display.scss"
+import helpInit from '../../utils/helper'
+import App from './index.vue';
+import "./css/index.scss"
+import "./css/display.scss"
 
-new App({ index, createI18n, createRouter, store }).bootstrap();
-
-
+helpInit(Vue);
+const router = createRouter();
+new Vue({
+    el: '#app',
+    router,
+    store,
+    render: h => h(App)
+})

@@ -70,6 +70,13 @@ module.exports = {
         fileName: "db",
         methName: "eImgMultiAdd",
     },
+    "letterList": {
+        title: "英语字母列表",
+        url: "/bc/letter/list",
+        method: "post",
+        fileName: "letter",
+        methName: "letterList",
+    },
     "wordList": {
         title: "字列表",
         url: "/bc/word/list",
@@ -92,11 +99,18 @@ module.exports = {
         methName: "idiomList",
     },
     "storyList": {
-        title: "古诗列表",
+        title: "故事列表",
         url: "/bc/story/list",
         method: "post",
         fileName: "db",
         methName: "storyList",
+    },
+    "poemList": {
+        title: "古诗列表",
+        url: "/bc/poem/list",
+        method: "post",
+        fileName: "db",
+        methName: "poemList",
     },
     "eImgList": {
         title: "英语单词列表",

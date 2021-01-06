@@ -5,8 +5,12 @@ const formData ={}
 module.exports = app => {
     return class AdminController extends app.Controller {
         // 页面控制器
-        async render(ctx) {
-            await ctx.renderClient("admin.js", {});
+        async study(ctx) {
+            await ctx.renderClient("study.js", {});
+        }
+         // 页面控制器
+         async manage(ctx) {
+            await ctx.renderClient("manage.js", {});
         }
     };
 };

@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import { sync } from 'vuex-router-sync';
-import VueI18n from 'vue-i18n';
+// import createI18n from './i18n/admin/index';
 import helpInit from '../utils/helper'
 helpInit(Vue);
 export default class App {
-  constructor(config) {
-    this.config = config;
-    Vue.use(VueI18n);
+  constructor() {
+    // this.config = config;
+    // Vue.use(createI18n('cn'));
   }
 
   bootstrap() {

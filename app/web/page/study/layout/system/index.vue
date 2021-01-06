@@ -2,7 +2,7 @@
   <div class="headerWrapper">
     <div></div>
     <div class="rightHeader">
-      <div class="fullScreen el-icon-full-screen" @click="fullScreen"></div>
+      <span class="fullScreen li-icon li-icon3_6" @click="fullScreen"></span>
       <el-popover
         title="配置"
         popper-class="systemConfig"
@@ -121,7 +121,7 @@
           </el-form-item>
         </el-form>
         <span
-          class="el-icon-setting"
+          class="li-icon li-icon4_1"
           slot="reference"
           @click="visible = !visible"
         ></span>
@@ -130,7 +130,6 @@
   </div>
 </template>
 <script>
-import "./header.css";
 import { mapGetters } from "vuex";
 import screenfull from "screenfull";
 export default {
@@ -275,7 +274,7 @@ export default {
       );
     },
     fullScreen(e) {
-      this.$store.commit('SET_IS_FULL', !screenfull.isFullscreen);
+      this.$store.commit("SET_IS_FULL", !screenfull.isFullscreen);
       screenfull.toggle();
     },
   },
@@ -290,13 +289,14 @@ export default {
 </style>
 <style lang="scss" scoped>
 .headerWrapper {
-  background: lightcyan;
-  height: 2.5rem;
+  height: 3rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-right: 1rem;
-  padding-left:1rem;
+  padding-right: .6rem;
+  padding-left: 1rem;
+  border-bottom: solid 1px green;
+  color: green;
   .fullScreen {
     margin-right: 1rem;
   }
@@ -304,6 +304,7 @@ export default {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    line-height: 1rem;
   }
 }
 

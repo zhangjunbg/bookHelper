@@ -1,3 +1,4 @@
+import Letter from '../../view/mainPage/letter.vue';
 import Word from '../../view/mainPage/word.vue';
 import Term from '../../view/mainPage/term.vue';
 import Idiom from '../../view/mainPage/idiom.vue';
@@ -11,8 +12,13 @@ export default {
   component: {
     template: '<router-view/>'
   },
-  redirect:"/learn/word",
+  redirect: "/learn/word",
   children: [
+    {
+      path: 'letter',
+      component: Letter,
+      meta: { title: 'Letter' }
+    },
     {
       path: 'word',
       component: Word,

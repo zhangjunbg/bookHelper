@@ -1,9 +1,14 @@
 <template>
-  <div class="wordWrapper" :style="`
+  <div
+    class="wordWrapper"
+    :style="
+      `
   height: ${fontSize}rem;
   width: ${fontSize}rem;
   line-height: ${fontSize}rem;
-  `">
+  `
+    "
+  >
     <div class="wordBg">
       <word-bg :notFirst="notFirst" :fontSize="fontSize"></word-bg>
     </div>
@@ -31,7 +36,7 @@ import { mapGetters } from "vuex";
 import wordBg from "./wordBg";
 export default {
   components: {
-    wordBg
+    wordBg,
   },
   props: {
     notFirst: {
@@ -42,14 +47,21 @@ export default {
       type: String,
       default: "22",
     },
-    color:{
-      type: String,
-      default: "#333",
-    },
     word: {
       type: String,
       default: "一",
-    }
+    },
+  },
+  computed: {
+    ...mapGetters([
+      "wordNum",
+      "level",
+      "studied",
+      "bgColor",
+      "color",
+      "autoplay",
+      "loop",
+    ]),
   },
 };
 </script>
@@ -73,8 +85,8 @@ export default {
     justify-content: center;
     align-items: center;
   }
-  span{
-    z-index:1;
+  span {
+    z-index: 1;
   }
 }
 </style>

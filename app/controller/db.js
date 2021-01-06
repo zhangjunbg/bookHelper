@@ -20,22 +20,24 @@ module.exports = app => {
       let type = insertData.type || 'word';
       delete insertData.type;
       let result = await this.service.db.insertMultiple(ctx, type, multiData);
-      ctx.body = result;
+      ctx.body = { code: '00', data: result };
     }
     // 批量新增
     async wordMultiAdd(ctx) {
       let data = ctx.request.body || {};
-      let { level, content } = data;
+      let { level, content, pinyin } = data;
       let multiData = [];
       let contentArr = content.split(/[,:;、-]/g);
-      contentArr.forEach(item => {
+      let pinyinArr = pinyin.split(/[,:;、-] /g)
+      contentArr.forEach((item, index) => {
         multiData.push({
           content: item,
-          level: level
+          level: level,
+          pinyin: pinyinArr[index]
         });
       });
       let result = await ctx.model.Word.insertMany(multiData)
-      ctx.body = result;
+      ctx.body = { code: '00', data: result };
     }
     // 批量修改
     async wordMultiUpdate(ctx) {
@@ -79,13 +81,13 @@ module.exports = app => {
     // 重置学习状态
     async cleanStudyStatus(ctx) {
       await ctx.model.Word.updateMany({}, {
-        $set: { 
-          studied:'0',
-          learnTimes:0,
-          errorTimes:0,
-          successTimes:0,
-          lastLearnTime:null
-         }
+        $set: {
+          studied: '0',
+          learnTimes: 0,
+          errorTimes: 0,
+          successTimes: 0,
+          lastLearnTime: null
+        }
       }, (err, raw) => {
         if (err) {
           console.log("db-updateData: ", err);
@@ -101,28 +103,28 @@ module.exports = app => {
       let insertData = ctx.request.body || {};
       let type = 'term';
       let result = await this.service.db.insertMultiple(ctx, type, insertData);
-      ctx.body = result;
+      ctx.body = { code: '00', data: result };
     }
     // 批量新增
     async idiomMultiAdd(ctx) {
       let insertData = ctx.request.body || {};
       let type = 'idiom';
       let result = await this.service.db.insertMultiple(ctx, type, insertData);
-      ctx.body = result;
+      ctx.body = { code: '00', data: result };
     }
     // 批量新增
     async storyMultiAdd(ctx) {
       let insertData = ctx.request.body || {};
       let type = 'story';
       let result = await this.service.db.insertMultiple(ctx, type, insertData);
-      ctx.body = result;
+      ctx.body = { code: '00', data: result };
     }
     // 批量新增
     async eImgMultiAdd(ctx) {
       let insertData = ctx.request.body || {};
       let type = 'eImg';
       let result = await this.service.db.insertMultiple(ctx, type, insertData);
-      ctx.body = result;
+      ctx.body = { code: '00', data: result };
     }
     // 查询列表页
     async wordList(ctx) {
@@ -137,30 +139,38 @@ module.exports = app => {
     // 查询列表页
     async termList(ctx) {
       let options = ctx.request.body || {};
-      let type = "term";
+      let type = "Term";
       let result = await this.service.db.getResourceList(ctx, type, options);
-      ctx.body = result;
+      ctx.body = { code: '00', data: result };
     }
     // 查询列表页
     async idiomList(ctx) {
       let options = ctx.request.body || {};
-      let type = "idiom";
+      let type = "Idiom";
       let result = await this.service.db.getResourceList(ctx, type, options);
-      ctx.body = result;
+      ctx.body = { code: '00', data: result };
     }
     // 查询列表页
     async storyList(ctx) {
       let options = ctx.request.body || {};
-      let type = "story";
+      let type = "Story";
       let result = await this.service.db.getResourceList(ctx, type, options);
-      ctx.body = result;
+      ctx.body = { code: '00', data: result };
+    }
+
+    // 查询列表页
+    async poemList(ctx) {
+      let options = ctx.request.body || {};
+      let type = "Poem";
+      let result = await this.service.db.getResourceList(ctx, type, options);
+      ctx.body = { code: '00', data: result };
     }
     // 查询列表页
     async eImgList(ctx) {
       let options = ctx.request.body || {};
       let type = "eImg";
       let result = await this.service.db.getResourceList(ctx, type, options);
-      ctx.body = result;
+      ctx.body = { code: '00', data: result };
     }
 
   }

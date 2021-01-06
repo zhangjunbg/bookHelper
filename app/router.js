@@ -6,13 +6,16 @@ const severApis = formatApi(apis);
 
 module.exports = app => {
   const { router, controller } = app;
-  router.get('/main/*', controller.admin.render);
+  router.get('/study/*', controller.admin.study);
+  router.get('/manage/*', controller.admin.manage);
   router.get('/createModel', controller.file.saveModels);
-  // router.post('/admin/api/article/list', controller.admin.list);
-  // router.post('/admin/api/article/add', controller.admin.add);
-  // router.get('/admin/api/article/del/:id', controller.admin.del);
-  // router.get('/admin/api/article/:id', controller.admin.detail);
-  // router.get('/admin(/.+)?', controller.admin.home);
+  router.get('/getPoem', controller.poem.getPoem);
+  // router.get('/getPoem', controller.poem.getPoem);
+  // router.get('/getPoem', controller.poem.getPoem);
+  // router.get('/getPoem', controller.poem.getPoem);
+  router.get('/saveAllLetters', controller.letter.saveAllLetters);
+  
+  
   // 接口 请求
   let t;
   for (let url in severApis) {

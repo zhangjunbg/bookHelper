@@ -5,9 +5,10 @@
         v-for="(item, index) in weekList"
         :key="index"
         :class="cDay == item.dy ? 'isFocus' : ''"
+        @click="handleClick(item.dy)"
       >
-        <span style="font-size:14px;">{{ item.wk }}</span>
-        <span style="font-size:12px;">{{ item.dy }}</span>
+        <span class="wk">{{ item.wk }}</span>
+        <span class="dy">{{ item.dy }}</span>
       </p>
     </div>
   </div>
@@ -15,7 +16,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-const wkObj = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+const wkObj = ["日", "一", "二", "三", "四", "五", "六"];
 export default {
   name: "CalHeader",
   props: {
@@ -51,7 +52,10 @@ export default {
     //
     let begin = this.begin.split("-");
     begin.shift();
+    begin = begin.map((item) => item.replace(/0([\d])/, "$1"));
     this.cDay = begin.join("-");
+
+    console.log("cDay: ", this.cDay);
     this.createWeek(this.begin);
 
     this.$post(
@@ -70,6 +74,11 @@ export default {
     );
   },
   methods: {
+    handleClick(val) {
+      console.log("val: ", val);
+      this.cDay = val;
+      this.$emit("chooseDay", val);
+    },
     // 生成未来一周日历
     createWeek(beginDate) {
       let curDay = new Date(beginDate);
@@ -90,59 +99,45 @@ export default {
         dy: cDay.getMonth() + 1 + "-" + cDay.getDate(),
       };
     },
-    markS(item, type) {
-      if (type == "E") {
-      } else {
-      }
-    },
-    handleDouble(item) {
-      console.log("handleDouble");
-      // this.$post();
-      this.$refs.slider.$emit("slideNext");
-    },
-    handleSuccess() {
-      this.$refs.slider.$emit("slideNext");
-    },
-    // Listener event
-    slide(data) {
-      console.log("data.direction: ", data.direction);
-      if (data.direction == "right") {
-        this.curNum++;
-      } else if (data.direction == "left") {
-        this.curNum--;
-      }
-    },
-    onTap(data) {
-      console.log("onTap", data);
-    },
-    onInit(data) {
-      console.log("onInit", data);
-    },
   },
 };
 </script>
 <style lang="scss" scoped>
 .calHeader {
-  height: 100%;
+  // height: 100%;
   width: 100%;
+  // box-shadow: 0 2px 5px #000;
+  font-size: 1.6rem;
 }
 .weekWrapper {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: lightpink;
-  color: #fff;
+  // background: lightpink;
+  // color: #fff;
+  .wk {
+    font-size: 1.8rem;
+    border-bottom: solid 1px #b2dfdc;
+  }
+  .dy {
+    font-size: 1.4rem;
+    margin-top: 0.4rem;
+  }
   p {
     flex: 1;
     display: inline-flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    border-right: solid 1px pink;
+    // border-right: solid 1px pink;
+    padding: 1rem 0 ;
+    span{
+      width:100%;
+    }
     &.isFocus {
-      background: #fff;
-      color: pink;
+      // background: #fff;
+      // color: pink;
     }
   }
 }

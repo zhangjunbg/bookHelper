@@ -7,10 +7,20 @@
     <system-tool v-if="!isFull"></system-tool>
     <span
       v-else
-      class="shrinkScreen el-icon-d-caret"
+      class="shrinkScreen li-icon li-icon1_4"
       @click="shrinkScreen"
     ></span>
-    <div style="flex:1">
+    <div v-if="isLock" class="isLock">
+      <span @click="unlock" class="li-icon li-icon2_3"></span>
+    </div>
+
+    <span
+      @click="lock"
+      class="lockContainer li-icon li-icon1_3"
+      v-if="!isLock"
+    ></span>
+
+    <div style="flex:1;overflow:hidden;">
       <router-view></router-view>
     </div>
     <bottom-bar v-if="!isFull"></bottom-bar>
@@ -32,7 +42,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["isFull"]),
+    ...mapGetters(["isFull", "isLock"]),
   },
   beforeMount() {
     this.$post("getUserConfig", { userId: "yangyang" }, (data) => {
@@ -53,6 +63,12 @@ export default {
     });
   },
   methods: {
+    lock() {
+      this.$store.commit("SET_IS_LOCK", true);
+    },
+    unlock() {
+      this.$store.commit("SET_IS_LOCK", false);
+    },
     shrinkScreen() {
       this.$store.commit("SET_IS_FULL", false);
       screenfull.toggle();
@@ -71,17 +87,39 @@ export default {
 }
 </style>
 <style lang="scss" scoped>
+.lockContainer {
+  position: fixed;
+  top: 50%;
+  left: 2rem;
+  margin-top: -1rem;
+  width: 2rem;
+  height: 2rem;
+  z-index: 99;
+  font-size: 2rem;
+  color:green;
+}
+.isLock {
+  position: fixed;
+  font-size: 2rem;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99;
+  padding: 2rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
 .mainWrapper {
   position: relative;
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: #f1f1f1;
   .shrinkScreen {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
-    // background:rgba(255,0,222,0.3);
     z-index: 3;
     font-size: 1.6rem;
     color: rgba(255, 0, 222, 0.3);

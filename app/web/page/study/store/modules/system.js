@@ -12,6 +12,7 @@ const system = {
     storyNum: 10,
     eImgNum: 10,
     isFull:false,
+    isLock : false,
   },
 
   mutations: {
@@ -53,6 +54,9 @@ const system = {
     },
     SET_IS_FULL: (state, data) => {
       state.isFull = data;
+    },
+    SET_IS_LOCK: (state, data) => {
+      state.isLock = data;
     },
   },
   actions: {}

@@ -3,6 +3,10 @@ module.exports = app => {
     const Schema = mongoose.Schema;
 
     const poemSchema = new Schema({
+        key: {
+            type: String,
+            default: ""
+        },
         // 故事名
         title: {
             type: String,
@@ -25,6 +29,20 @@ module.exports = app => {
         },
         // 具体成语
         content: {
+            type: String,
+            default: ""
+        },
+        // 声音
+        sound: {
+            type: String,
+            default: ""
+        },
+        //翻译
+        fanyi: {
+            type: String,
+            default: ""
+        },
+        desc: {
             type: String,
             default: ""
         },

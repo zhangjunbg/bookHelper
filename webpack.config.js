@@ -4,7 +4,8 @@ module.exports = {
   devtool: 'eval',
   target: 'web',
   entry: {
-    admin: 'app/web/page/study/index.js'
+    study: 'app/web/page/study/index.js',
+    manage: 'app/web/page/manage/index.js',
   },
   cssExtract: true,
   dll: ['vue', 'vue-router', 'vuex', 'axios', 'vuex-router-sync', 'vue-i18n'],

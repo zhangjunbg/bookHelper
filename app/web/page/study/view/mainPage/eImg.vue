@@ -17,18 +17,7 @@
     </div>
   </div>
 </template>
-<style lang="scss">
-.bgContainer {
-  position: absolute;
-  left: 0;
-  top: 1rem;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>
+
 <script type="text/babel">
 import { mapGetters } from "vuex";
 import word from "../../components/word";
@@ -38,7 +27,6 @@ export default {
   },
   data() {
     return {
-      color1: "#ccc",
       svgOpt: { gap: 12, all: 300, pointsDown: [], pointsUp: [] },
       mainObj: {},
       curNum: 1,
@@ -126,60 +114,7 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-.wordWrapperContainer {
-  -webkit-tap-highlight-color: transparent;
-  box-sizing: border-box;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background: #fff;
-  margin-top: 0.5rem;
-  padding: 2rem;
-
-  .toolBar {
-    width: 100%;
-    height: 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-}
-
-.wordWrapper {
-  -webkit-tap-highlight-color: transparent;
-  cursor: pointer;
-  position: relative;
-  height: 31.25rem;
-  width: 31.25rem;
-  line-height: 31.25rem;
-  /* background-image: url(../../../../asset/images/word_bg2_1.png); */
-  background-size: 100%;
-  background-repeat: no-repeat;
-  font-size: 23.75rem;
-  font-family: 楷体;
-
-  -moz-user-select: none;
-  /*火狐*/
-  -webkit-user-select: none;
-  /*webkit浏览器*/
-  -ms-user-select: none;
-  /*IE10*/
-  -khtml-user-select: none;
-  /*早期浏览器*/
-  -o-user-select: none;
-  /* Opera*/
-  user-select: none;
-
-  /* color:#940026; */
-}
-
+<style lang="scss" scoped>
 .fullClick {
   -webkit-tap-highlight-color: transparent;
   position: relative;
