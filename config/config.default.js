@@ -23,5 +23,24 @@ module.exports = (app) => {
     },
   };
 
+  exports.mysql = {
+    // database configuration
+    client: {
+      // host
+      host: '47.110.80.94',
+      // port
+      port: '38029',
+      // username
+      user: 'dora',
+      // password
+      password: 'dora123',
+      // database
+      database: 'studyDB',
+    },
+    // load into app, default is open
+    app: true,
+    // load into agent, default is close
+    agent: false,
+  };
   return exports;
 };

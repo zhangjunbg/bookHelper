@@ -13,5 +13,15 @@ function makeSplit(arr, num = 200) {
   });
   return result;
 }
+
+function getPartsFromMarkdown(md){
+
+}
+function getPartsFromHtml(html){
+  
+}
+
+
+
 function saveFile(content, filePath) {}
 module.exports = { makeSplit };

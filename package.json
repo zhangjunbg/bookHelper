@@ -21,13 +21,16 @@
     "egg-cors": "^2.0.0",
     "egg-logger": "^1.5.0",
     "egg-mongoose": "^3.3.1",
+    "egg-mysql": "^3.1.0",
     "egg-scripts": "^2.9.1",
     "egg-validate": "^1.0.0",
     "extend": "~3.0.0",
+    "fs-extra": "^10.0.1",
     "lodash": "^4.17.4",
     "lodash-id": "^0.14.0",
     "mockjs": "^1.0.1-beta3",
-    "shortid": "^2.2.8"
+    "shortid": "^2.2.8",
+    "showdown": "^2.0.3"
   },
   "devDependencies": {
     "autod-egg": "^1.0.0",
